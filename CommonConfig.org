@@ -108,9 +108,31 @@
 #+BEGIN_SRC emacs-lisp
   (windmove-default-keybindings)
 #+END_SRC
+** counsel
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :ensure t
+    :bind
+    (("M-y" . counsel-yank-pop)
+     :map ivy-minibuffer-map
+     ("M-y" . ivy-next-line)))
+#+END_SRC
+** ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :ensure t
+    :diminish (ivy-mode)
+    :bind (("C-x b" . ivy-switch-buffer))
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "%d/%d ")
+    (setq ivy-display-style 'fancy))
+#+END_SRC
 ** swiper
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
+    :after (ivy)
     :ensure t
     :bind (("C-s" . swiper)
            ("C-r" . swiper)
@@ -139,12 +161,6 @@
   ;;    (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
      (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
   ))
-#+END_SRC
-** counsel
-#+BEGIN_SRC emacs-lisp
-  (use-package counsel
-    :ensure t
-    )
 #+END_SRC
 * emacs-lisp procedures config
 ** electric auto
@@ -196,6 +212,7 @@
 *** jedi
 #+BEGIN_SRC emacs-lisp
   (use-package company-jedi
+    :after (company)
     :init
     (add-hook 'python-mode-hook (add-to-list 'company-backends 'company-jedi)))
 #+END_SRC
