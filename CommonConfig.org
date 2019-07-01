@@ -213,6 +213,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package company-jedi
     :after (company)
+    :ensure t
     :init
     (add-hook 'python-mode-hook (add-to-list 'company-backends 'company-jedi)))
 #+END_SRC
