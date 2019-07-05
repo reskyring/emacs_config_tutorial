@@ -246,9 +246,6 @@
       :ensure t
       :init
       (global-git-gutter-mode +1))
-
-
-
 #+END_SRC
 *** git-timemachine
 #+BEGIN_SRC emacs-lisp
