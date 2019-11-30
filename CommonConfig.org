@@ -191,7 +191,9 @@
 #+END_SRC
 *** company-reftex
 #+BEGIN_SRC emacs-lisp
-  
+  (use-package company-reftex
+    :after (company reftex)
+    :ensure t)
 #+END_SRC
 ** flycheck
 #+BEGIN_SRC emacs-lisp
@@ -258,3 +260,7 @@
     :ensure t)
 #+END_SRC
     
+** pdf-tools
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC

@@ -44,7 +44,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (which-key use-package tabbar org-bullets magit ido-vertical-mode git-timemachine git-gutter flycheck elpy counsel company-jedi))))
+    (git-timemachine git-gutter magit elpy company-jedi yasnippet flycheck company-reftex company which-key counsel tabbar ido-vertical-mode org-bullets use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
