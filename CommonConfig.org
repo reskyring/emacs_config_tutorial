@@ -10,7 +10,7 @@
 #+END_SRC
 *** menu close
 #+BEGIN_SRC emacs-lisp
-  (menu-bar-mode -1)
+  ;;(menu-bar-mode -1)
 #+END_SRC
 *** scroll close
 #+BEGIN_SRC emacs-lisp
@@ -181,12 +181,17 @@
 
 * common procedures config
 ** auto completion
+*** company
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
     :init
     (add-hook 'after-init-hook 'global-company-mode))
 
+#+END_SRC
+*** company-reftex
+#+BEGIN_SRC emacs-lisp
+  
 #+END_SRC
 ** flycheck
 #+BEGIN_SRC emacs-lisp
@@ -252,3 +257,4 @@
   (use-package git-timemachine
     :ensure t)
 #+END_SRC
+    
