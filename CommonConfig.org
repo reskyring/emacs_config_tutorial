@@ -189,11 +189,36 @@
     (add-hook 'after-init-hook 'global-company-mode))
 
 #+END_SRC
-*** company-reftex
+*** company-auctex
 #+BEGIN_SRC emacs-lisp
-  (use-package company-reftex
-    :after (company reftex)
-    :ensure t)
+  (use-package company-auctex
+    :after (company auctex-latexmk pdf-tools)
+    :ensure t
+    :init (company-auctex-init))
+#+END_SRC
+*** reftex
+#+BEGIN_SRC emacs-lisp
+  (use-package reftex
+    :ensure t
+    :defer t
+    :config
+    (setq reftex-cite-prompt-optional-args t))
+#+END_SRC
+** auctex-latexmk
+#+BEGIN_SRC emacs-lisp
+  (use-package auctex-latexmk
+    :after (pdf-tools)
+    :ensure t
+    :config
+    (auctex-latexmk-setup)
+    (setq auctex-latexmk-inherit-TeX-PDF-mode t))
+#+END_SRC
+** auto-dictionary
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-dictionary
+    :after (reftex)
+    :ensure t
+    :init (add-hook 'flyspell-mode-hook (lambda() (auto-dictionary-mode 1))))
 #+END_SRC
 ** flycheck
 #+BEGIN_SRC emacs-lisp
@@ -262,5 +287,13 @@
     
 ** pdf-tools
 #+BEGIN_SRC emacs-lisp
-
+  (use-package pdf-tools
+    :ensure t
+    :config
+    (pdf-tools-install)
+    (setq-default pdf-view-display-size 'fit-page)
+    (setq pdf-annot-activate-created-annotations t)
+    (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+    (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
+    (add-hook 'pdf-view-mode-hook (lambda () (bms/pdf-midnite-amber))))
 #+END_SRC
