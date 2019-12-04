@@ -192,9 +192,17 @@
 *** company-auctex
 #+BEGIN_SRC emacs-lisp
   (use-package company-auctex
-    :after (company auctex-latexmk pdf-tools)
+    :after (company auctex pdf-tools)
     :ensure t
     :init (company-auctex-init))
+#+END_SRC
+*** auctex
+#+BEGIN_SRC emacs-lisp
+  (use-package auctex
+    :defer t
+    :ensure t
+    :config
+    (setq TeX-auto-save t))
 #+END_SRC
 *** reftex
 #+BEGIN_SRC emacs-lisp
@@ -205,14 +213,14 @@
     (setq reftex-cite-prompt-optional-args t))
 #+END_SRC
 ** auctex-latexmk
-#+BEGIN_SRC emacs-lisp
-  (use-package auctex-latexmk
-    :after (pdf-tools)
-    :ensure t
-    :config
-    (auctex-latexmk-setup)
-    (setq auctex-latexmk-inherit-TeX-PDF-mode t))
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (use-package auctex-latexmk
+       :after (auctex)
+       :ensure t
+       :config 
+       (auctex-latexmk-setup)
+       (setq auctex-latexmk-inherit-TeX-PDF-mode t))
+   #+END_SRC
 ** auto-dictionary
 #+BEGIN_SRC emacs-lisp
   (use-package auto-dictionary
@@ -297,3 +305,4 @@
     (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
     (add-hook 'pdf-view-mode-hook (lambda () (bms/pdf-midnite-amber))))
 #+END_SRC
+   

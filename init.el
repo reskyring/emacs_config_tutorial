@@ -4,9 +4,15 @@
 ;;load initializa config
 (require 'package)
 (setq package-enable-at-startup nil)
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+			 ("melpa" . "https://melpa.org/packages/")
 			 ("org"   . "https://orgmode.org/elpa/")))
 (package-initialize)
+
+(setq url-proxy-services 
+  '(("http" . "127.0.0.1:8081")
+    ("https" . "127.0.0.1:8081")))
+
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -44,7 +50,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (git-timemachine git-gutter magit elpy company-jedi yasnippet flycheck company-reftex company which-key counsel tabbar ido-vertical-mode org-bullets use-package))))
+    (pdf-tools auto-dictionary auctex-latexmk company-auctex git-timemachine git-gutter magit elpy company-jedi yasnippet flycheck company-reftex company which-key counsel tabbar ido-vertical-mode org-bullets use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
