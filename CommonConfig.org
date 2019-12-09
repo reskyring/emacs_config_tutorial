@@ -108,6 +108,24 @@
 #+BEGIN_SRC emacs-lisp
   (windmove-default-keybindings)
 #+END_SRC
+* emacs-lisp procedures config
+** electric auto
+#+BEGIN_SRC emacs-lisp
+  (setq electric-pair-pairs '(
+                              (?\( . ?\))
+                              (?\[ . ?\])
+                              ))
+  (electric-pair-mode t)
+#+END_SRC
+** which-key 
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :ensure t
+    :init
+    (which-key-mode))
+#+END_SRC
+
+* common package config
 ** counsel
 #+BEGIN_SRC emacs-lisp
   (use-package counsel
@@ -132,13 +150,12 @@
 ** swiper
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
-    :after (ivy)
     :ensure t
     :bind (("C-s" . swiper)
-           ("C-r" . swiper)
-           ("<f6>" . ivy-resume)
-           ("M-x" . counsel-M-x)
-           ("C-x C-f" . counsel-find-file))   
+	   ("C-r" . swiper)
+	   ("<f6>" . ivy-resume)
+	   ("M-x" . counsel-M-x)
+	   ("C-x C-f" . counsel-find-file))   
     :config
     (progn
       (ivy-mode 1)
@@ -162,41 +179,20 @@
      (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
   ))
 #+END_SRC
-* emacs-lisp procedures config
-** electric auto
-#+BEGIN_SRC emacs-lisp
-  (setq electric-pair-pairs '(
-                              (?\( . ?\))
-                              (?\[ . ?\])
-                              ))
-  (electric-pair-mode t)
-#+END_SRC
-** which-key 
-#+BEGIN_SRC emacs-lisp
-  (use-package which-key
-    :ensure t
-    :init
-    (which-key-mode))
-#+END_SRC
-
-* common procedures config
-** auto completion
-*** company
+** company
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
     :init
     (add-hook 'after-init-hook 'global-company-mode))
-
 #+END_SRC
-*** company-auctex
+** company-auctex
 #+BEGIN_SRC emacs-lisp
   (use-package company-auctex
-    :after (company auctex pdf-tools)
     :ensure t
     :init (company-auctex-init))
 #+END_SRC
-*** auctex
+** auctex
 #+BEGIN_SRC emacs-lisp
   (use-package auctex
     :defer t
@@ -204,7 +200,7 @@
     :config
     (setq TeX-auto-save t))
 #+END_SRC
-*** reftex
+** reftex
 #+BEGIN_SRC emacs-lisp
   (use-package reftex
     :ensure t
@@ -215,7 +211,6 @@
 ** auctex-latexmk
    #+BEGIN_SRC emacs-lisp
      (use-package auctex-latexmk
-       :after (auctex)
        :ensure t
        :config 
        (auctex-latexmk-setup)
@@ -224,9 +219,31 @@
 ** auto-dictionary
 #+BEGIN_SRC emacs-lisp
   (use-package auto-dictionary
-    :after (reftex)
     :ensure t
     :init (add-hook 'flyspell-mode-hook (lambda() (auto-dictionary-mode 1))))
+#+END_SRC
+** tex
+#+BEGIN_SRC emacs-lisp
+  (use-package tex
+    :ensure auctex
+    :mode ("\\.tex\\'" . latex-mode)
+    :config (progn
+	      (setq TeX-source-correlate-mode t)
+	      (setq TeX-source-correlate-method 'synctex)
+	      (setq TeX-auto-save t)
+	      (setq TeX-parse-self t)
+	      (setq-default TeX-master "paper.tex")
+	      (setq reftex-plug-into-AUCTeX t)
+	      (pdf-tools-install)
+	      (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+		    TeX-source-correlate-start-server t)
+	      ;; Update PDF buffers after successful LaTeX runs
+	      (add-hook 'TeX-after-compilation-finished-functions
+			#'TeX-revert-document-buffer)
+	      (add-hook 'LaTeX-mode-hook
+			(lambda ()
+			  (reftex-mode t)
+			  (flyspell-mode t)))))
 #+END_SRC
 ** flycheck
 #+BEGIN_SRC emacs-lisp
@@ -248,8 +265,7 @@
     :config
     (elpy-enable))
 #+END_SRC
-** python
-*** jedi
+** jedi
 #+BEGIN_SRC emacs-lisp
   (use-package company-jedi
     :after (company)
@@ -257,7 +273,7 @@
     :init
     (add-hook 'python-mode-hook (add-to-list 'company-backends 'company-jedi)))
 #+END_SRC
-*** elpy
+** elpy
 #+BEGIN_SRC emacs-lisp
   (use-package elpy
     :ensure t
@@ -267,6 +283,18 @@
       (setq elpy-rpc-python-command "python3")
       (setq python-shell-interpreter "python3")
       (remove-hook 'elpy-modules 'elpy-module-flymake)))
+#+END_SRC
+** pdf-tools
+#+BEGIN_SRC emacs-lisp
+  (use-package pdf-tools
+    :ensure t
+    :config
+    (pdf-tools-install)
+    (setq-default pdf-view-display-size 'fit-page)
+    (setq pdf-annot-activate-created-annotations t)
+    (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+    (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
+    (add-hook 'pdf-view-mode-hook (lambda () (bms/pdf-midnite-amber))))
 #+END_SRC
 ** git
 *** magit
@@ -292,17 +320,3 @@
   (use-package git-timemachine
     :ensure t)
 #+END_SRC
-    
-** pdf-tools
-#+BEGIN_SRC emacs-lisp
-  (use-package pdf-tools
-    :ensure t
-    :config
-    (pdf-tools-install)
-    (setq-default pdf-view-display-size 'fit-page)
-    (setq pdf-annot-activate-created-annotations t)
-    (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-    (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
-    (add-hook 'pdf-view-mode-hook (lambda () (bms/pdf-midnite-amber))))
-#+END_SRC
-   
