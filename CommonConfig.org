@@ -186,11 +186,12 @@
     :init
     (add-hook 'after-init-hook 'global-company-mode))
 #+END_SRC
-** company-auctex
+** yasnippet
 #+BEGIN_SRC emacs-lisp
-  (use-package company-auctex
+  (use-package yasnippet
     :ensure t
-    :init (company-auctex-init))
+    :config
+    (elpy-enable))
 #+END_SRC
 ** auctex
 #+BEGIN_SRC emacs-lisp
@@ -208,6 +209,12 @@
     :config
     (setq reftex-cite-prompt-optional-args t))
 #+END_SRC
+** company-auctex
+#+BEGIN_SRC emacs-lisp
+  (use-package company-auctex
+    :ensure t
+    :init (company-auctex-init))
+#+END_SRC
 ** auctex-latexmk
    #+BEGIN_SRC emacs-lisp
      (use-package auctex-latexmk
@@ -216,12 +223,6 @@
        (auctex-latexmk-setup)
        (setq auctex-latexmk-inherit-TeX-PDF-mode t))
    #+END_SRC
-** auto-dictionary
-#+BEGIN_SRC emacs-lisp
-  (use-package auto-dictionary
-    :ensure t
-    :init (add-hook 'flyspell-mode-hook (lambda() (auto-dictionary-mode 1))))
-#+END_SRC
 ** tex
 #+BEGIN_SRC emacs-lisp
   (use-package tex
@@ -245,30 +246,36 @@
 			  (reftex-mode t)
 			  (flyspell-mode t)))))
 #+END_SRC
+** pdf-tools
+#+BEGIN_SRC emacs-lisp
+  (use-package pdf-tools
+    :ensure t
+    :config
+    (pdf-tools-install)
+    (setq-default pdf-view-display-size 'fit-page)
+    (setq pdf-annot-activate-created-annotations t)
+    (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+    (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
+    (add-hook 'pdf-view-mode-hook (lambda () (bms/pdf-midnite-amber))))
+#+END_SRC
+** auto-dictionary
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-dictionary
+    :ensure t
+    :init (add-hook 'flyspell-mode-hook (lambda() (auto-dictionary-mode 1))))
+#+END_SRC
 ** flycheck
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
     :ensure t
     :init
-    (global-flycheck-mode))
-
-  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
-
-
-
-#+END_SRC
-** yasnippet
-#+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-    :after (elpy)
-    :ensure t
-    :config
-    (elpy-enable))
+    (global-flycheck-mode)
+    :config 
+    (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 #+END_SRC
 ** jedi
 #+BEGIN_SRC emacs-lisp
   (use-package company-jedi
-    :after (company)
     :ensure t
     :init
     (add-hook 'python-mode-hook (add-to-list 'company-backends 'company-jedi)))
@@ -283,18 +290,6 @@
       (setq elpy-rpc-python-command "python3")
       (setq python-shell-interpreter "python3")
       (remove-hook 'elpy-modules 'elpy-module-flymake)))
-#+END_SRC
-** pdf-tools
-#+BEGIN_SRC emacs-lisp
-  (use-package pdf-tools
-    :ensure t
-    :config
-    (pdf-tools-install)
-    (setq-default pdf-view-display-size 'fit-page)
-    (setq pdf-annot-activate-created-annotations t)
-    (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-    (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
-    (add-hook 'pdf-view-mode-hook (lambda () (bms/pdf-midnite-amber))))
 #+END_SRC
 ** git
 *** magit
