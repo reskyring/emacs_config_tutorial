@@ -4,6 +4,14 @@
 #+BEGIN_SRC emacs-lisp
   (global-hl-line-mode t)
 #+END_SRC
+*** global-linum-mode start
+#+BEGIN_SRC emacs-lisp
+  (global-linum-mode 1)
+#+END_SRC
+*** inhibit-splash-screen start
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-splash-screen t)
+#+END_SRC
 *** tool close
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode -1)
@@ -27,6 +35,14 @@
 *** desktop-restore close
 #+BEGIN_SRC emacs-lisp
   (setq desktop-restore-frames nil)
+#+END_SRC
+*** make-backup-file close
+#+BEGIN_SRC emacs-lisp
+  (setq make-backup-files nil)
+#+END_SRC
+*** frame max 
+#+BEGIN_SRC emacs-lisp
+  (toggle-frame-maximized)
 #+END_SRC
 ** hotkey
 *** y-or-n
@@ -97,13 +113,6 @@
 ;;(global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
   (defalias 'list-buffers 'ibuffer)
 #+END_SRC
-** tabbar config
-#+BEGIN_SRC emacs-lisp
-  (use-package tabbar
-    :ensure t
-    :config
-    (tabbar-mode 1))
-#+END_SRC
 ** window move
 #+BEGIN_SRC emacs-lisp
   (windmove-default-keybindings)
@@ -124,8 +133,14 @@
     :init
     (which-key-mode))
 #+END_SRC
-
 * common package config
+** tabbar config
+#+BEGIN_SRC emacs-lisp
+  (use-package tabbar
+    :ensure t
+    :config
+    (tabbar-mode 1))
+#+END_SRC
 ** counsel
 #+BEGIN_SRC emacs-lisp
   (use-package counsel
@@ -184,7 +199,10 @@
   (use-package company
     :ensure t
     :init
-    (add-hook 'after-init-hook 'global-company-mode))
+    (progn
+      (add-hook 'after-init-hook 'global-company-mode)
+      (global-company-mode t)
+      (setq company-minimum-prefix-length 1)))
 #+END_SRC
 ** yasnippet
 #+BEGIN_SRC emacs-lisp
